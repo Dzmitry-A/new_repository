@@ -11,11 +11,11 @@ describe('Onliner Market', function() {
 	    onlinerPage.scrollPage();
 
 		
+		const searchText = 'трассоискатель';
+		const a = onlinerPage.getTextInput(searchText);
+		expect(a).toEqual(searchText);
 
-		let a = onlinerPage.getTextInput('трассоискатель');
-		expect(a).toEqual('трассоискатель');
-
-		let b = onlinerPage.getAttributeInput();
+		const b = onlinerPage.getInputClassValue();
 		expect(b).toEqual('fast-search__input');
 
 

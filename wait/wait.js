@@ -28,5 +28,11 @@ this.waitForElementPresent = async function(intervalRequest, timeOut, elementObj
 			}
 		
 		};
+
+this.waitForPresent = async function (elementObject, timeOut){
+
+	await browser.wait(protractor.ExpectedConditions.presenceOf(elementObject), timeOut);
+	
+};	
 };
 module.exports = new wait ();

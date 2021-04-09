@@ -1,6 +1,9 @@
+const wait = require('../wait/wait');
+
 let onlinerPage =  function() {
-    let checkBoxApple = element(by.cssContainingText('.schema-filter__checkbox-text','Apple'));
-    let searchInput = element(by.css('.fast-search__input'));
+    const checkBoxApple = element(by.cssContainingText('.schema-filter__checkbox-text','Apple'));
+    const searchInput = element(by.css('.fast-search__input'));
+    const pop_upList = element(by.css('.search__result:nth-child(3)'));
     
     this.openSite = async function() {
         browser.waitForAngularEnabled(false);
@@ -8,7 +11,7 @@ let onlinerPage =  function() {
     };
    
     this.clickCheckBox = async function() {
-        await browser.wait(protractor.ExpectedConditions.presenceOf(checkBoxApple), 5000);
+        await wait.waitForPresent(checkBoxApple, 5000);
         await checkBoxApple.click(); 
     };
 
@@ -19,22 +22,21 @@ let onlinerPage =  function() {
     };
 
     this.clickOnTheDropdown = async function(text) {
-        await browser.wait(protractor.ExpectedConditions.presenceOf(searchInput), 5000);
+        await wait.waitForPresent(searchInput, 5000);
         await searchInput.click().sendKeys(text); 
         await browser.sleep(3000);
-        let pop_upList = element(by.css('.search__result:nth-child(3)'));
-        await browser.wait(protractor.ExpectedConditions.presenceOf(pop_upList), 5000);
+        await wait.waitForPresent(pop_upList, 5000);
 	    await pop_upList.sendKeys(protractor.Keys.ENTER);
 
     };
 
     this.getTextInput = async function(text) {
-        await browser.wait(protractor.ExpectedConditions.presenceOf(searchInput), 5000);
+        await wait.waitForPresent(searchInput, 5000);
         await searchInput.click().sendKeys(text); 
         return await searchInput.getAttribute('value');
     };
 
-    this.getAttributeInput = async function() {
+    this.getInputClassValue = async function() {
         return await searchInput.getAttribute('class');
     };
 };
