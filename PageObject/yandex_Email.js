@@ -16,6 +16,9 @@ let yandex_Email =  function () {
     const moreLanguage = element(by.cssContainingText('.menu__text','ещё'));
     const listLanguage = element(by.css('.button.select__button.button_theme_normal.button_arrow_down.button_size_m.i-bem.button_js_inited'));
     const belarusLanguage = element(by.cssContainingText('.menu__text','Bel'));
+    const buttonSkip = element(by.css('.Button2.Button2_type_link.Button2_size_l.Button2_view_pseudo.Button2_width_max'));
+    const salerPersonalAccount = element(by.cssContainingText('._1AHfXkp0Kh','Личный кабинет продавца'));
+    const buttonEnter = element(by.css('.Button2.Button2_size_l.Button2_view_action.Button2_width_max.Button2_type_submit'));
     const timeOut = 10000;
 
     this.openSite = async function() {
@@ -23,7 +26,7 @@ let yandex_Email =  function () {
     };
 
 
-    this.enterEmail = async function(login, password) {
+    this.loginToEmail = async function(login, password) {
         await wait.waitForPresent(enterMail, timeOut);
         await enterMail.click();
         await wait.waitForPresent(loginInput, timeOut);
@@ -33,20 +36,38 @@ let yandex_Email =  function () {
         await passwordInput.click().sendKeys(password);
         await passwordInput.sendKeys(protractor.Key.ENTER);
     };
+    this.loginToEmail_Actions = async function(login, password) {
+        await wait.waitForPresent(enterMail, timeOut);
+        await browser.actions().click(enterMail).perform();
+        await wait.waitForPresent(loginInput, timeOut);
+        await browser.actions().click(loginInput).sendKeys(login).perform();
+        await loginInput.sendKeys(protractor.Key.ENTER);
+        await wait.waitForPresent(passwordInput, timeOut);
+        await browser.actions().click(passwordInput).sendKeys(password).perform();
+        await passwordInput.sendKeys(protractor.Key.ENTER);
+        await browser.actions().click(buttonSkip).perform();
+    };
+    this.loginToEmail_JSExecutor = async function(login, password) {
+        await wait.waitForPresent(enterMail, timeOut);
+        await browser.executeScript('arguments[0].click()', enterMail);
+        await wait.waitForPresent(loginInput, timeOut);
+        await browser.executeScript(`arguments[0].value='${login}'`, loginInput);
 
-    this.getLoginValue = async function() {
+    };
+
+    this.getLoginText = async function() {
         await wait.waitForPresent(login, timeOut);
         return await login.getText();
     };
 
-    this.logoutEmail = async function() {
+    this.logout = async function() {
         await wait.waitForPresent(login, timeOut);
         await login.click();
         await wait.waitForPresent(exit, timeOut);
         await exit.click();
     };
 
-    this.checkLogout = async function() {
+    this.getPresentElement = async function() {
         await wait.waitForPresent(enterMail, timeOut);
         return await enterMail.isPresent();
     };
@@ -59,7 +80,7 @@ let yandex_Email =  function () {
         await loginInput.sendKeys(protractor.Key.ENTER);
     };
 
-    this.getMessageError = async function() {
+    this.getErrorMessage = async function() {
         await wait.waitForPresent(errorMessage, timeOut);
         return await errorMessage.getText();
     };
@@ -88,16 +109,22 @@ let yandex_Email =  function () {
         await wait.waitForPresent(servicesMarket, timeOut);
         await servicesMarket.click();
     };
-    this.setLanguage = async function() {
+    this.setLanguageBelarus = async function() {
         await wait.waitForPresent(language, timeOut);
         await language.click();
         await wait.waitForPresent(belarusLanguage, timeOut);
         await belarusLanguage.click();
     };
-    this.getLanguageValue = async function() {
+    this.getLanguageText = async function() {
         await wait.waitForPresent(enterMail, timeOut);
         return await enterMail.getText();
     };
+
+    this.scrollToMarketMagazin = async function() {
+        await wait.waitForPresent(salerPersonalAccount, timeOut);
+        await browser.actions().mouseMove(salerPersonalAccount).perform();
+    };
+
 
 };
 
